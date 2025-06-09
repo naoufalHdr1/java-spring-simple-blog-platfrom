@@ -21,4 +21,7 @@ public class User {
     @Column(nullable = false)
     private String role;
 
+    @OneToMany(mappedBy = "author", cascade = CascadeType.All, orphanRemoval = true)
+    private List<Post> posts;
+
 }
