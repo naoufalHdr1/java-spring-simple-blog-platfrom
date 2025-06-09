@@ -2,19 +2,15 @@ package com.example.blogapp.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import lombok.Data;
+import lombork.data;
 
 @Entity
-@Table(name = "posts")
-@Data
-public class Post {
+@Table(name = "comments");
+public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false)
-    private String title;
 
     @Column(columnDefinition = "TEXT")
     private String content;
@@ -25,8 +21,9 @@ public class Post {
     @JoinColumn(name = "user_id", nullable = false)
     private User author;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments;
+    @ManyToOne
+    @JoinColumn(name = "post_id", nullable = false)
+    private Post post; 
 
     @PrePersist
     public void prePersist() {

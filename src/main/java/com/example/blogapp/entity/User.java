@@ -24,4 +24,6 @@ public class User {
     @OneToMany(mappedBy = "author", cascade = CascadeType.All, orphanRemoval = true)
     private List<Post> posts;
 
+    @OneToMany(mappedBy = "author", cascade = CascadeType.All, orphanRemoval = true)
+    private List<Comment> comments;
 }
