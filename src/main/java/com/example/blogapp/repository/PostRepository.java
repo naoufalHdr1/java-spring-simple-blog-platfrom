@@ -9,5 +9,7 @@ import java.util.List;
 public interface PostRepository extends JpaRepository<Post, Long> {
 
     List<Post> findByAuthor(User user); // all posts by a specific user
+
+    List<Post> findByTitleContainingIgnoreCase(String keyword); // search
 }
 
