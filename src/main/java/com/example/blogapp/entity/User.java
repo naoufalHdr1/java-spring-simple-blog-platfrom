@@ -2,6 +2,7 @@ package com.example.blogapp.entity;
 
 import jakarta.persistence.*;
 import java.util.List;
+import lombok.Data;
 
 @Entity
 @Table(name = "users")
@@ -9,7 +10,7 @@ import java.util.List;
 public class User {
 
     @Id
-    @GenerativeValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, unique = true)
@@ -21,9 +22,9 @@ public class User {
     @Column(nullable = false)
     private String role;
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.All, orphanRemoval = true)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> posts;
 
-    @OneToMany(mappedBy = "author", cascade = CascadeType.All, orphanRemoval = true)
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 }

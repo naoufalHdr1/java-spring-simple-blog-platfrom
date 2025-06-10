@@ -2,10 +2,10 @@ package com.example.blogapp.entity;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import lombork.data;
+import lombok.Data;
 
 @Entity
-@Table(name = "comments");
+@Table(name = "comments")
 public class Comment {
 
     @Id
