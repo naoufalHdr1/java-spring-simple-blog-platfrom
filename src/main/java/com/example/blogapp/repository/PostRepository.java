@@ -10,3 +10,4 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     List<Post> findByAuthor(User user); // all posts by a specific user
 }
+
