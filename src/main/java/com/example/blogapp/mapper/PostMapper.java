@@ -1,0 +1,27 @@
+package com.example.blogapp.mapper;
+
+import com.example.blog.dto.PostDTO;
+import com.example.blog.dto.PostCreateDTO;
+import com.example.blog.entity.Post;
+import com.example.blog.entity.User;
+
+public class PostMapper {
+
+    public static Post toEntity(PostCreateDTO dto, User author) {
+        return Post.builder()
+                .title(dto.getTitle())
+                .content(dto.getContent())
+                .author(author)
+                .build();
+    }
+
+    public static PostDTO toDTO(Post post) {
+        return PostDTO.builder()
+                .id(post.getId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .authorUsername(post.getAuthor().getUsername())
+                .createdAt(post.getCreatedAt())
+                .build();
+    }
+}
