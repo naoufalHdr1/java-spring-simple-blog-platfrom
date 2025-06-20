@@ -1,15 +1,11 @@
-package com.example.blogapp.repository;
+package com.example.blog.repository;
 
-import com.example.blogapp.entity.Post;
-import com.example.blogapp.entity.User;
+import com.example.blog.entity.Post;
+import com.example.blog.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
-
-    List<Post> findByAuthor(User user); // all posts by a specific user
-
-    List<Post> findByTitleContainingIgnoreCase(String keyword); // search
+    List<Post> findByAuthor(User author);
 }
-
