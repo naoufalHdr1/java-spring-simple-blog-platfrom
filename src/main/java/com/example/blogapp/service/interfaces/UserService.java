@@ -1,6 +1,6 @@
-package com.example.blogapp.service;
+package com.example.blogapp.service.interfaces;
 
-import com.example.blogapp.dtp.UserDTO;
+import com.example.blogapp.dto.UserDTO;
 
 public interface UserService {
     UserDTO getUserByUsername(String username);

@@ -6,13 +6,13 @@ import java.util.Set;
 
 @Getter
 @Setter
-@NoArgsController
-@AllArgsController
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class LoginResponseDTO {
     private String token;
     private String username;
-    private Set<Role> roles;
+    private Set<String> roles;
     private String expiresAt;
 }
 

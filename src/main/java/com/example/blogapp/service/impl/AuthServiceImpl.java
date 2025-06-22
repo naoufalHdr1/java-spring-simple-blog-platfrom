@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -63,10 +64,10 @@ public class AuthServiceImpl implements AuthService {
 
         return LoginResponseDTO.builder()
                 .token(jwtToken)
-                .email(userDetails.getUsername())
+                .username(userDetails.getUsername())
                 .roles(userDetails.getAuthorities().stream()
                         .map(auth -> auth.getAuthority())
-                        .toList())
+                        .collect(Collectors.toSet()))
                 .build();
     }
 }

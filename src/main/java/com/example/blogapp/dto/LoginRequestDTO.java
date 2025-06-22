@@ -4,8 +4,8 @@ import lombok.*;
 
 @Getter
 @Setter
-@NoArgsController
-@AllArgsController
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class LoginRequestDTO {
     private String email;

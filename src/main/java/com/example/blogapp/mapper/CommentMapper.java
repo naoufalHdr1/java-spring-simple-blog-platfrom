@@ -1,10 +1,10 @@
 package com.example.blogapp.mapper;
 
-import com.example.blog.dto.CommentCreateDTO;
-import com.example.blog.dto.CommentDTO;
-import com.example.blog.entity.Comment;
-import com.example.blog.entity.Post;
-import com.example.blog.entity.User;
+import com.example.blogapp.dto.CommentCreateDTO;
+import com.example.blogapp.dto.CommentDTO;
+import com.example.blogapp.entity.Comment;
+import com.example.blogapp.entity.Post;
+import com.example.blogapp.entity.User;
 
 public class CommentMapper {
 

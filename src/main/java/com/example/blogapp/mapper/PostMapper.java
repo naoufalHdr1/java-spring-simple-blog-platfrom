@@ -1,13 +1,13 @@
 package com.example.blogapp.mapper;
 
-import com.example.blog.dto.PostDTO;
-import com.example.blog.dto.PostCreateDTO;
-import com.example.blog.entity.Post;
-import com.example.blog.entity.User;
+import com.example.blogapp.dto.PostDTO;
+import com.example.blogapp.dto.PostCreatedDTO;
+import com.example.blogapp.entity.Post;
+import com.example.blogapp.entity.User;
 
 public class PostMapper {
 
-    public static Post toEntity(PostCreateDTO dto, User author) {
+    public static Post toEntity(PostCreatedDTO dto, User author) {
         return Post.builder()
                 .title(dto.getTitle())
                 .content(dto.getContent())

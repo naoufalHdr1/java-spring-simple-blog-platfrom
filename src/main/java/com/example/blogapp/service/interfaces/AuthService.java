@@ -1,9 +1,9 @@
-package com.example.blog.service.interfaces;
+package com.example.blogapp.service.interfaces;
 
-import com.example.blog.dto.LoginRequestDTO;
-import com.example.blog.dto.LoginResponseDTO;
-import com.example.blog.dto.UserDTO;
-import com.example.blog.dto.UserSignupDTO;
+import com.example.blogapp.dto.LoginRequestDTO;
+import com.example.blogapp.dto.LoginResponseDTO;
+import com.example.blogapp.dto.UserDTO;
+import com.example.blogapp.dto.UserSignupDTO;
 
 public interface AuthService {
     UserDTO register(UserSignupDTO dto);

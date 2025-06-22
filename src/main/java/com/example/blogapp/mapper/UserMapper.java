@@ -1,11 +1,12 @@
 package com.example.blogapp.mapper;
 
-import com.example.blog.dto.UserDTO;
-import com.example.blog.dto.UserSignupDTO;
-import com.example.blog.entity.Role;
-import com.example.blog.entity.User;
+import com.example.blogapp.dto.UserDTO;
+import com.example.blogapp.dto.UserSignupDTO;
+import com.example.blogapp.entity.Role;
+import com.example.blogapp.entity.User;
 
 import java.util.stream.Collectors;
+import java.util.Set;
 
 public class UserMapper {
 
