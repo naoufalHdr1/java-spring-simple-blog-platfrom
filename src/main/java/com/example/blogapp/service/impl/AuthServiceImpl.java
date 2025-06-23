@@ -2,6 +2,7 @@ package com.example.blogapp.service.impl;
 
 import com.example.blogapp.dto.*;
 import com.example.blogapp.entity.Role;
+import com.example.blogapp.entity.RoleType;
 import com.example.blogapp.entity.User;
 import com.example.blogapp.exception.DuplicateResourceException;
 import com.example.blogapp.repository.RoleRepository;
@@ -31,6 +32,7 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public UserDTO register(UserSignupDTO dto) {
+
         if (userRepository.existsByEmail(dto.getEmail())) {
             throw new DuplicateResourceException("Email is already in use");
         }
@@ -39,7 +41,7 @@ public class AuthServiceImpl implements AuthService {
             throw new DuplicateResourceException("Username is already taken");
         }
 
-        Role defaultRole = roleRepository.findByName("READER")
+        Role defaultRole = roleRepository.findByName(RoleType.READER)
                 .orElseThrow(() -> new RuntimeException("Default role not found"));
 
         User user = User.builder()
@@ -50,6 +52,7 @@ public class AuthServiceImpl implements AuthService {
                 .build();
 
         User savedUser = userRepository.save(user);
+        System.out.println("test5");
         return UserMapper.toDTO(savedUser);
     }
 
@@ -58,6 +61,7 @@ public class AuthServiceImpl implements AuthService {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword())
         );
+        System.out.println("principal= " + authentication.getPrincipal());
 
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         String jwtToken = jwtService.generateToken(userDetails);

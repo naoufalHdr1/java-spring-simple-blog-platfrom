@@ -25,8 +25,8 @@ public class UserMapper {
                 .username(user.getUsername())
                 .email(user.getEmail())
                 .roles(user.getRoles().stream()
-                        .map(Role::getName)
-                        .collect(Collectors.toSet()))
+                    .map(role -> role.getName().name())
+                    .collect(Collectors.toSet()))
                 .build();
     }
 }
