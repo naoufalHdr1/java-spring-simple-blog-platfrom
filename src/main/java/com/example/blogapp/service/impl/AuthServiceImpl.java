@@ -5,6 +5,7 @@ import com.example.blogapp.entity.Role;
 import com.example.blogapp.entity.RoleType;
 import com.example.blogapp.entity.User;
 import com.example.blogapp.exception.DuplicateResourceException;
+import com.example.blogapp.exception.InvalidCredentialsException;
 import com.example.blogapp.repository.RoleRepository;
 import com.example.blogapp.repository.UserRepository;
 import com.example.blogapp.security.JwtService;
@@ -16,6 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.authentication.BadCredentialsException;
 
 import java.util.Collections;
 import java.util.stream.Collectors;
@@ -58,20 +60,23 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public LoginResponseDTO login(LoginRequestDTO dto) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword())
-        );
-        System.out.println("principal= " + authentication.getPrincipal());
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword())
+            );
 
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        String jwtToken = jwtService.generateToken(userDetails);
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            String jwtToken = jwtService.generateToken(userDetails);
 
-        return LoginResponseDTO.builder()
-                .token(jwtToken)
-                .username(userDetails.getUsername())
-                .roles(userDetails.getAuthorities().stream()
-                        .map(auth -> auth.getAuthority())
-                        .collect(Collectors.toSet()))
-                .build();
+            return LoginResponseDTO.builder()
+                    .token(jwtToken)
+                    .username(userDetails.getUsername())
+                    .roles(userDetails.getAuthorities().stream()
+                            .map(auth -> auth.getAuthority())
+                            .collect(Collectors.toSet()))
+                    .build();
+        } catch (BadCredentialsException e) {
+            throw new InvalidCredentialsException("Invalid email or password");
+        }
     }
 }
