@@ -2,35 +2,80 @@ package com.example.blogapp.service.impl;
 
 import com.example.blogapp.entity.Post;
 import com.example.blogapp.entity.User;
+import com.example.blogapp.dto.PostDTO;
+import com.example.blogapp.dto.PostCreateDTO;
+import com.example.blogapp.dto.PostUpdateDTO;
+import com.example.blogapp.mapper.PostMapper;
+import com.example.blogapp.util.SecurityUtils;
+import com.example.blogapp.entity.User;
 import com.example.blogapp.repository.PostRepository;
-import com.example.blogapp.service.PostService;
+import com.example.blogapp.repository.UserRepository;
+import com.example.blogapp.service.interfaces.PostService;
 import org.springframework.stereotype.Service;
+import com.example.blogapp.exception.ResourceNotFoundException;
+import com.example.blogapp.exception.AccessDeniedException;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
 
     private final PostRepository postRepository;
+    private final UserRepository userRepository;
 
-    public PostServiceImpl(PostRepository postRepository) {
-        this.postRepository = postRepository;
+    @Override
+    public PostDTO savePost(PostCreateDTO dto, String email) {
+        User author = userRepository.findByEmail(email)
+            .orElseThrow(() ->
+                    new ResourceNotFoundException("User not found with email: " + email));
+        Post post = PostMapper.toEntity(dto, author);
+        Post savedPost = postRepository.save(post);
+
+        return PostMapper.toDTO(savedPost);
     }
 
     @Override
-    public Post savePost(Post post) {
-        return postRepository.save(post);
+    public PostDTO updatePost(Long id, PostUpdateDTO dto, String email) {
+        Post post = postRepository.findById(id)
+            .orElseThrow(() ->
+                    new ResourceNotFoundException("Post not found with id: " + id));
+        User user = userRepository.findByEmail(email)
+            .orElseThrow(() ->
+                    new ResourceNotFoundException("User not found with email: " + email));
+
+        if (!SecurityUtils.isOwner(user, post) && !SecurityUtils.isAdmin(user)) {
+            throw new AccessDeniedException("You are not authorized to update this post.");
+        }
+
+        post.setTitle(dto.getTitle());
+        post.setContent(dto.getContent());
+
+        Post savedPost = postRepository.save(post);
+
+        return PostMapper.toDTO(savedPost);
+    }
+
+
+    @Override
+    public PostDTO getPostById(Long id) {
+        Post post = postRepository.findById(id)
+            .orElseThrow(() ->
+                    new ResourceNotFoundException("Post not found with id " + id));
+
+        return PostMapper.toDTO(post);
     }
 
     @Override
-    public Optional<Post> getPostById(Long id) {
-        return postRepository.findById(id);
-    }
-
-    @Override
-    public List<Post> getAllPosts() {
-        return postRepository.findAll();
+    public List<PostDTO> getAllPosts() {
+        return postRepository.findAll()
+            .stream()
+            .map(PostMapper::toDTO)
+            .collect(Collectors.toList());
     }
 
     @Override
@@ -44,7 +89,18 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void deletePost(Long id) {
+    public void deletePost(Long id, String email) {
+        Post post = postRepository.findById(id)
+            .orElseThrow(() ->
+                    new ResourceNotFoundException("Post not found with id: " + id));
+        User user = userRepository.findByEmail(email)
+            .orElseThrow(() ->
+                    new ResourceNotFoundException("User not found with email: " + email));
+
+        if (!SecurityUtils.isOwner(user, post) && !SecurityUtils.isAdmin(user)) {
+            throw new AccessDeniedException("You are not authorized to delete this post");
+        }
+
         postRepository.deleteById(id);
     }
 }

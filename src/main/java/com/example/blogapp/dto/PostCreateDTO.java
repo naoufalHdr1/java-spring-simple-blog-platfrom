@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PostCreatedDTO {
+public class PostCreateDTO {
     private String title;
     private String content;
 }
