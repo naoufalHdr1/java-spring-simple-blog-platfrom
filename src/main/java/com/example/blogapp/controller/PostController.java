@@ -49,25 +49,21 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.CREATED).body(post);
     }
 
-    @PreAuthorize("hasAnyRole('AUTHOR', 'ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or @postSecurity.isOwner(#id)")
     @PutMapping("/{id}")
     public ResponseEntity<PostDTO> updatePost(
-            @AuthenticationPrincipal UserDetails userDetails,
             @PathVariable Long id,
             @RequestBody PostUpdateDTO dto
     ) {
-        PostDTO post = postService.updatePost(id, dto, userDetails.getUsername());
+        PostDTO post = postService.updatePost(id, dto);
 
         return ResponseEntity.ok(post);
     }
 
-    @PreAuthorize("hasAnyRole('AUTHOR', 'ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or @postSecurity.isOwner(#id)")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePost(
-            @AuthenticationPrincipal UserDetails userDetails,
-            @PathVariable Long id
-    ) {
-        postService.deletePost(id, userDetails.getUsername());
+    public ResponseEntity<?> deletePost(@PathVariable Long id) {
+        postService.deletePost(id);
         return ResponseEntity.noContent().build();
     }
 }

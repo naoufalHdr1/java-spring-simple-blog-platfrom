@@ -11,10 +11,10 @@ import java.util.Optional;
 
 public interface PostService {
     PostDTO savePost(PostCreateDTO post, String email);
-    PostDTO updatePost(Long id, PostUpdateDTO dto, String email);
+    PostDTO updatePost(Long id, PostUpdateDTO dto);
     PostDTO getPostById(Long id);
     List<PostDTO> getAllPosts();
     List<Post> getPostsByUser(User user);
     List<Post> searchPostsByTitle(String keyword);
-    void deletePost(Long id, String email);
+    void deletePost(Long id);
 }

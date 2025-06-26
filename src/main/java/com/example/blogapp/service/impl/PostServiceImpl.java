@@ -40,17 +40,10 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostDTO updatePost(Long id, PostUpdateDTO dto, String email) {
+    public PostDTO updatePost(Long id, PostUpdateDTO dto) {
         Post post = postRepository.findById(id)
             .orElseThrow(() ->
                     new ResourceNotFoundException("Post not found with id: " + id));
-        User user = userRepository.findByEmail(email)
-            .orElseThrow(() ->
-                    new ResourceNotFoundException("User not found with email: " + email));
-
-        if (!SecurityUtils.isOwner(user, post) && !SecurityUtils.isAdmin(user)) {
-            throw new AccessDeniedException("You are not authorized to update this post.");
-        }
 
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
@@ -89,17 +82,10 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public void deletePost(Long id, String email) {
+    public void deletePost(Long id) {
         Post post = postRepository.findById(id)
             .orElseThrow(() ->
                     new ResourceNotFoundException("Post not found with id: " + id));
-        User user = userRepository.findByEmail(email)
-            .orElseThrow(() ->
-                    new ResourceNotFoundException("User not found with email: " + email));
-
-        if (!SecurityUtils.isOwner(user, post) && !SecurityUtils.isAdmin(user)) {
-            throw new AccessDeniedException("You are not authorized to delete this post");
-        }
 
         postRepository.deleteById(id);
     }
