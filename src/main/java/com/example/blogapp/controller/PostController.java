@@ -49,7 +49,7 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.CREATED).body(post);
     }
 
-    @PreAuthorize("hasRole('ADMIN') or @postSecurity.isOwner(#id)")
+    @PreAuthorize("hasRole('ADMIN') or @postSecurity.isOwnerAndAuthor(#id)")
     @PutMapping("/{id}")
     public ResponseEntity<PostDTO> updatePost(
             @PathVariable Long id,
@@ -60,7 +60,7 @@ public class PostController {
         return ResponseEntity.ok(post);
     }
 
-    @PreAuthorize("hasRole('ADMIN') or @postSecurity.isOwner(#id)")
+    @PreAuthorize("hasRole('ADMIN') or @postSecurity.isOwnerAndAuthor(#id)")
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePost(@PathVariable Long id) {
         postService.deletePost(id);

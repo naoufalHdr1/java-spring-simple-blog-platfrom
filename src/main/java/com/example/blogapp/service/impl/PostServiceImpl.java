@@ -6,7 +6,6 @@ import com.example.blogapp.dto.PostDTO;
 import com.example.blogapp.dto.PostCreateDTO;
 import com.example.blogapp.dto.PostUpdateDTO;
 import com.example.blogapp.mapper.PostMapper;
-import com.example.blogapp.util.SecurityUtils;
 import com.example.blogapp.entity.User;
 import com.example.blogapp.repository.PostRepository;
 import com.example.blogapp.repository.UserRepository;
